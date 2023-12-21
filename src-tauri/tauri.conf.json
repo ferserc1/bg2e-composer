@@ -12,6 +12,20 @@
   "tauri": {
     "allowlist": {
       "all": false,
+      "dialog": {
+        "all": true
+      },
+      "fs": {
+        "all": true,
+        "scope": [
+          "$HOME/**",
+          "$DOCUMENT/**",
+          "$DOCUMENT/*",
+          "$DOCUMENT",
+          "$HOME/*",
+          "$HOME"
+        ]
+      },
       "shell": {
         "all": false,
         "open": true

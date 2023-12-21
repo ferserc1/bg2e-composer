@@ -12,6 +12,9 @@
   import Vec from 'bg2e/math/Vec';
   import SmoothOrbitCameraController from 'bg2e/scene/SmoothOrbitCameraController';
 
+  import { open } from "@tauri-apps/api/dialog";
+  import { readTextFile } from "@tauri-apps/api/fs";
+
   class MyAppController extends SceneAppController {
     async loadScene() {
       registerLoaderPlugin(new VitscnjLoaderPlugin({ bg2ioPath: "/node_modules/bg2e/node_modules/bg2io/" }));
@@ -45,12 +48,36 @@
     mainLoop.updateMode = FrameUpdate.AUTO;
     await mainLoop.run();
   })
+
+  let fileContent = "";
+  const openFile = async () => {
+    try {
+      const selectedPath = await open({
+        multiple: false,
+        directory: false,
+        defaultPath: "/",
+        title: "Open file"
+      });
+
+      console.log(selectedPath);
+      fileContent = await readTextFile(selectedPath);
+      console.log(fileContent);
+
+    }
+    catch (e) {
+      console.error(e);
+    }
+  }
 </script>
 
 <main class="container">
 
   <div class="row">
     <Greet />
+
+    <button on:click={openFile}>Open</button>
+
+    <textarea bind:value={fileContent}></textarea>
   </div>
 
   <canvas id="mainCanvas" width="400" height="400"></canvas>
